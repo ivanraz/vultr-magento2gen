@@ -101,4 +101,11 @@ function showInstance(detail) {
         })
 
 }
-module.exports = {displayInstances, selectInstance, showInstance};
+
+function unselectInstance () {
+
+    configuration.delEnv('instanceID');
+    console.log('Instance no longer selected');
+
+}
+module.exports = {displayInstances, selectInstance, showInstance, unselectInstance};

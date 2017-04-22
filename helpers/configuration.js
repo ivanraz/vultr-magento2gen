@@ -71,4 +71,13 @@ function modEnv(key, value) {
 
 }
 
-module.exports = { configure, getEnv, modEnv };
+function delEnv(key) {
+
+    let env = getEnv();
+    delete env[key];
+
+    fs.writeFileSync('./config.json', JSON.stringify(env))
+
+}
+
+module.exports = { configure, getEnv, modEnv, delEnv };
