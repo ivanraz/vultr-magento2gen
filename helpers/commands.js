@@ -69,4 +69,36 @@ function selectInstance(id) {
 
 
 }
-module.exports = {displayInstances, selectInstance};
+
+function showInstance(detail) {
+
+    let env = configuration.getEnv();
+    let instanceId = env.instanceID;
+    if (!instanceId) {
+
+        console.log('Cannot get instanceID from config.json');
+        return;
+
+    }
+
+    vultr.listInstances(env)
+        .then((servers) => {
+
+            let instance = servers.find(server => server.SUBID == instanceId);
+
+            if (!instance) {
+
+                console.log('Cannot find instance');
+                return;
+
+            }
+
+            console.log(instance[detail] || `No option for ${detail}`)
+
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+
+}
+module.exports = {displayInstances, selectInstance, showInstance};
