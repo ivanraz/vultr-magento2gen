@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+const _ = require('lodash');
+const configuration = require('./helpers/configuration');
+const env = configuration.getEnv();
+const {checkVultrApi} = require('./helpers/vultr');
+const {displayInstances, selectInstance} = require('./helpers/commands');
+const program = require('commander');
+
+program.version('0.0.1');
+
+if (_.isEmpty(env)) {
+
+    console.log('No configuration detected!');
+    configuration.configure();
+
+}
+
+checkVultrApi(env).then((info) => {
+
+    if (_.isEmpty(env.instanceID)) {
+
+        program
+            .command('list')
+            .description('List instances')
+            .action(() => { displayInstances() });
+
+        program
+            .command('select [id]')
+            .description('Select an instance')
+            .action((options) => { selectInstance(options) });
+
+        program.parse(process.argv);
+
+    } else {
+
+        program
+            .command('show <key>')
+            .description('Show instance <key>')
+            .option('status')
+            .option('os');
+
+        program.parse(process.argv);
+
+    }
+
+    if (!process.argv.slice(2).length) {
+        program.outputHelp();
+        return;
+    }
+
+
+}).catch((e) => {
+    console.log(e);
+});
