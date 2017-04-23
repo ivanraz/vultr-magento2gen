@@ -39,20 +39,24 @@ function configure() {
         }
 
         console.log('Checking vultr api...');
+        modEnv('vultr', answers.vultrApi);
+        let env = getEnv();
 
-        checkVultrApi(answers.vultrApi).then((res) => {
+        checkVultrApi(env).then((res) => {
 
             console.log('api is ok');
 
             let configuration = {
-                vultr: answers.vultrApi
+                vultr: answers.vultrApi,
+                validApi: true
+
             };
 
             fs.writeFileSync('./config.json', JSON.stringify(configuration));
 
 
         }).catch((e) => {
-           console.log('bad api key');
+           console.log(e);
            return false;
         });
 
@@ -65,6 +69,8 @@ function configure() {
 function modEnv(key, value) {
 
     let env = getEnv();
+    if (env === false) env = {};
+
     env[key] = value;
 
     fs.writeFileSync('./config.json', JSON.stringify(env))
