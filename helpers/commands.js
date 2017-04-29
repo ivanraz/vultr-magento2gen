@@ -2,6 +2,7 @@ const vultr = require('./vultr');
 const configuration = require('./configuration');
 const inquirer = require('inquirer');
 const _ = require('lodash');
+const tasks = require('./tasks');
 
 function displayInstances() {
 
@@ -209,4 +210,22 @@ function createInstance() {
     });
 
 }
-module.exports = {displayInstances, selectInstance, showInstance, unselectInstance, createInstance};
+
+function installMagento() {
+  let env = configuration.getEnv();
+  vultr.listInstances(env).then(servers => {
+
+    let instance = servers.filter((server) => server.SUBID == env.instanceID)[0]
+
+    let ip = instance.main_ip;
+    let password = instance.default_password;
+
+    tasks.InstallMagento(ip, password);
+
+
+
+  })
+
+}
+
+module.exports = {displayInstances, selectInstance, showInstance, unselectInstance, createInstance, installMagento};

@@ -13,6 +13,8 @@
     "commander": "^2.9.0",
     "inquirer": "^3.0.6",
     "lodash": "^4.17.4",
+    "scp": "0.0.3",
+    "simple-ssh": "^0.9.0",
     "vultr": "0.0.6"
   }
 }

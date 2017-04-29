@@ -4,7 +4,7 @@ const _ = require('lodash');
 const configuration = require('./helpers/configuration');
 const env = configuration.getEnv();
 const {checkVultrApi} = require('./helpers/vultr');
-const {displayInstances, selectInstance, showInstance, unselectInstance, createInstance} = require('./helpers/commands');
+const {displayInstances, selectInstance, showInstance, unselectInstance, createInstance, installMagento} = require('./helpers/commands');
 const program = require('commander');
 
 program.version('0.0.1');
@@ -42,12 +42,17 @@ if (_.isEmpty(env.instanceID)) {
         .command('show [key]')
         .description('Show instance parameter')
         .option('key')
-        .action((options) => {(options) ? showInstance(options) : console.log('No option selected')})
+        .action((options) => {(options) ? showInstance(options) : console.log('No option selected')});
 
     program
         .command('unselect')
         .description('unselected instance')
-        .action(unselectInstance)
+        .action(unselectInstance);
+
+    program
+      .command('magento')
+      .description('Install magento 2 on instance')
+      .action(installMagento)
 
 }
 
