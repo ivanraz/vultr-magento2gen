@@ -34,7 +34,7 @@ module.exports = {
       .exec('sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=magento/g" /etc/apache2/envvars', { out: console.log.bind(console) })
       .exec('wget -O /etc/apache2/sites-available/magento.conf http://raz:LP7a7kyx1hVj@tmp.mystore.today/apache.conf', { out: console.log.bind(console) })
       .exec(`sed -i "s/{servername}/${server.host}/g" /etc/apache2/sites-available/magento.conf`, { out: console.log.bind(console) })
-      .exec('a2enmod proxy_fcgi setenvif rewrite vhost_alias header', { out: console.log.bind(console) })
+      .exec('a2enmod proxy_fcgi setenvif rewrite vhost_alias header expires', { out: console.log.bind(console) })
       .exec('a2dissite 000-default && rm /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/default-ssl.conf && a2ensite magento', { out: console.log.bind(console) })
       .exec('service apache2 restart', { out: console.log.bind(console) })
       .exec('echo "magento:qwaszx1337" | chpasswd', { out: console.log.bind(console) })
