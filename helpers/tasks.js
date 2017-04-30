@@ -52,6 +52,8 @@ module.exports = {
               .exec('echo "php /usr/bin/composer create-project --repository-url=https://62ee4749ca30881cf825db961a051dcf:6b795b58ef79e320616b4e350f6155f0@repo.magento.com/ magento/project-community-edition /var/www/m2/src" > installMagento.sh', { out: console.log.bind(console) })
               .exec('bash installMagento.sh', { out: console.log.bind(console.Console), err:  console.log.bind('err:', console.Console)})
               .exec(`php /var/www/m2/src/bin/magento setup:install --base-url="http://${server.host}" --db-host="localhost" --db-name=magento --db-user="magento" --db-password="qwaszx1234" --admin-firstname="studioraz" --admin-lastname="studioraz" --admin-email="dev@studioraz.co.il" --admin-user="studioraz" --admin-password="!studioraZ2015" --language="en_US"`, { out: console.log.bind(console.Console), err:  console.log.bind('err:', console.Console)})
+              .exec('mkdir /home/magento/.composer', { out: console.log.bind(console) })
+              .exec('echo \'{ "http-basic": { "repo.magento.com": { "username": "62ee4749ca30881cf825db961a051dcf", "password": "6b795b58ef79e320616b4e350f6155f0" } } }\' > /home/magento/.composer/auth.json', { out: console.log.bind(console) })
               .on('error', function(err) {
                 console.log('error:', err);
                 ssh.end()
