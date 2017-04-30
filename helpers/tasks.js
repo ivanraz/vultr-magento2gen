@@ -34,7 +34,7 @@ module.exports = {
       .exec('sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=magento/g" /etc/apache2/envvars', { out: console.log.bind(console) })
       .exec('wget -O /etc/apache2/sites-available/magento.conf http://raz:LP7a7kyx1hVj@tmp.mystore.today/apache.conf', { out: console.log.bind(console) })
       .exec(`sed -i "s/{servername}/${server.host}/g" /etc/apache2/sites-available/magento.conf`, { out: console.log.bind(console) })
-      .exec('a2enmod proxy_fcgi setenvif rewrite vhost_alias header expires', { out: console.log.bind(console) })
+      .exec('a2enmod proxy_fcgi setenvif rewrite vhost_alias headers expires', { out: console.log.bind(console) })
       .exec('a2dissite 000-default && rm /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/default-ssl.conf && a2ensite magento', { out: console.log.bind(console) })
       .exec('service apache2 restart', { out: console.log.bind(console) })
       .exec('echo "magento:qwaszx1337" | chpasswd', { out: console.log.bind(console) })
@@ -54,6 +54,8 @@ module.exports = {
               .exec(`php /var/www/m2/src/bin/magento setup:install --base-url="http://${server.host}" --db-host="localhost" --db-name=magento --db-user="magento" --db-password="qwaszx1234" --admin-firstname="studioraz" --admin-lastname="studioraz" --admin-email="dev@studioraz.co.il" --admin-user="studioraz" --admin-password="!studioraZ2015" --language="en_US"`, { out: console.log.bind(console.Console), err:  console.log.bind('err:', console.Console)})
               .exec('mkdir /home/magento/.composer', { out: console.log.bind(console) })
               .exec('echo \'{ "http-basic": { "repo.magento.com": { "username": "62ee4749ca30881cf825db961a051dcf", "password": "6b795b58ef79e320616b4e350f6155f0" } } }\' > /home/magento/.composer/auth.json', { out: console.log.bind(console) })
+              .exec('cd /var/www/m2/src && composer require semaio/magento2-configimportexport', { out: console.log.bind(console.Console), err:  console.log.bind('err:', console.Console)})
+              .exec('cd /var/www/m2/src && php bin/magento setup:upgrade && php bin/magento cache:clean', { out: console.log.bind(console.Console), err:  console.log.bind('err:', console.Console)})
               .on('error', function(err) {
                 console.log('error:', err);
                 ssh.end()
